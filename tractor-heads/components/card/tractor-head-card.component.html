@@ -1,0 +1,50 @@
+<div class="card">
+    <div class="truck-card__header">
+        <truck-plate [plateNumber]="tractorHead().plate" />
+        <tractor-heads-status-chip [status]="tractorHead().status" />
+    </div>
+
+    <div class="truck-card__body">
+        <div class="truck-card__data-row">
+            <div class="truck-card__data-column">
+                <span class="truck-card__data-label">{{ "components.tractor-heads.card.origin" | translate }}</span>
+                <span class="truck-card__data-value">{{ tractorHead().origin.name }}</span>
+            </div>
+            <div class="truck-card__data-column truck-card__data-column--align-right">
+                <span class="truck-card__data-label">{{ "components.tractor-heads.card.destination" | translate
+                    }}</span>
+                <span class="truck-card__data-value">{{ tractorHead().destination.name }}</span>
+            </div>
+        </div>
+        <div class="truck-card__data-row">
+            <div class="truck-card__data-column">
+                <span class="truck-card__data-label">{{ "components.tractor-heads.card.arrivalDate" | translate
+                    }}</span>
+                <span class="truck-card__data-value">
+                    {{ tractorHead().arrivalDatetime ? (tractorHead().arrivalDatetime | date: "d/M/yyyy HH:mm") : "-" }}
+                </span>
+            </div>
+            <div class="truck-card__data-column truck-card__data-column--align-right">
+                <span class="truck-card__data-label">{{ "components.tractor-heads.card.exitDate" | translate }}</span>
+                <span class="truck-card__data-value">
+                    {{ tractorHead().exitDatetime ? (tractorHead().exitDatetime | date: "d/M/yyyy HH:mm") : "-" }}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="truck-card__footer">
+        <div class="truck-card__data-column">
+            <span class="truck-card__data-label">Contenedor de llegada</span>
+            <span class="truck-card__data-value">
+                {{ tractorHead().arrivalContainer.code }} ({{ tractorHead().arrivalContainer.currentWeight }} kg)
+            </span>
+        </div>
+        <div class="truck-card__data-column truck-card__data-column--align-right">
+            <span class="truck-card__data-label">Contenedor de salida</span>
+            <span class="truck-card__data-value">
+                {{ tractorHead().exitContainer.code }} ({{ tractorHead().exitContainer.currentWeight }} kg)
+            </span>
+        </div>
+    </div>
+</div>
