@@ -1,0 +1,34 @@
+@let truck = trucksEntriesStore.selectedTruck(); @if(!truck) { }@else {
+<div class="detail-page">
+  <app-page-header pageTitle="Detalle de camión" [areFiltersOpen]="true" />
+  <div class="detail-page__content">
+    <div class="detail-page__sidebar">
+      <app-info-mini-card
+        [label]="'truck.plate' | translate"
+        [value]="truck.plate"
+      />
+      <app-info-mini-card
+        [label]="'truck.location' | translate"
+        [value]="truck.origins.join(', ')"
+      />
+      <app-info-mini-card
+        [label]="'truck.entryDate' | translate"
+        [value]="(truck.datetimeArrival | date) ?? '-'"
+      />
+      <app-info-mini-card
+        [label]="'truck.entryWeight' | translate"
+        [value]="truck.arrivalWeight"
+      />
+      <app-info-mini-card
+        [label]="'truck.exitWeight' | translate"
+        [value]="truck.exitWeight"
+      />
+      <app-info-mini-card
+        [label]="'truck.exitDate' | translate"
+        [value]="(truck.datetimeExit | date) ?? '-'"
+      />
+    </div>
+    <plant-trucks-update-form [truck]="truck" />
+  </div>
+</div>
+}
