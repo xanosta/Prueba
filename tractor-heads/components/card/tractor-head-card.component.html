@@ -1,0 +1,50 @@
+<div class="tractor-card card--clickable">
+    <div class="tractor-card__header">
+        <truck-plate [plateNumber]="tractorHead().plate" />
+        <tractor-heads-status-chip [status]="tractorHead().status" />
+    </div>
+
+    <div class="tractor-card__body">
+        <div class="tractor-card__data-row">
+            <div class="tractor-card__data-column">
+                <span class="tractor-card__data-label">{{ "components.tractor-heads.card.model" | translate }}</span>
+                <span class="tractor-card__data-value">{{ tractorHead().model || "-"}}</span>
+            </div>
+            <div class="tractor-card__data-column tractor-card__data-column--align-right">
+                <span class="tractor-card__data-label">{{ "components.tractor-heads.card.arrivalContainer" | translate
+                    }}</span>
+                <span class="tractor-card__data-value">{{ tractorHead().arrivalContainer.residueTypes || "-" }}</span>
+            </div>
+        </div>
+        <div class="tractor-card__data-row">
+            <div class="tractor-card__data-column">
+                <span class="tractor-card__data-label">{{ "components.tractor-heads.card.arrivalDate" | translate
+                    }}</span>
+                <span class="tractor-card__data-value">
+                    {{ tractorHead().arrivalDatetime ? (tractorHead().arrivalDatetime | date: "d/M/yyyy HH:mm") : "-" }}
+                </span>
+            </div>
+            <div class="tractor-card__data-column tractor-card__data-column--align-right">
+                <span class="tractor-card__data-label">{{ "components.tractor-heads.card.exitDate" | translate }}</span>
+                <span class="tractor-card__data-value">
+                    {{ tractorHead().exitDatetime ? (tractorHead().exitDatetime | date: "d/M/yyyy HH:mm") : "-" }}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="tractor-card__footer">
+        <div class="tractor-card__data-column">
+            <span class="tractor-card__data-label">{{ "components.tractor-heads.card.origin" | translate }}</span>
+            <span class="tractor-card__data-value">
+                {{tractorHead().origin.name}}
+            </span>
+        </div>
+        <div class="tractor-card__data-column tractor-card__data-column--align-right">
+            <span class="tractor-card__data-label">{{ "components.tractor-heads.card.destination" | translate }}</span>
+            <span class="tractor-card__data-value">
+                {{tractorHead().destination.name || "-"}}
+            </span>
+        </div>
+    </div>
+</div>
