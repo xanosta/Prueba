@@ -1,0 +1,16 @@
+.truck-states-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+  height: 100%;
+
+  &__chip {
+    padding: 0.5rem 1rem;
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    border-width: 2px;
+    border-style: solid;
+  }
+}

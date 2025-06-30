@@ -1,0 +1,36 @@
+@let isLoading = trucksEntriesStore.isBusy(); @let trucks =
+trucksEntriesStore.trucksList(); @let areFiltersOpen =
+trucksEntriesStore.areTruckFiltersOpen();
+
+<div class="new-page">
+  <div class="new-page__breadcrumbs">
+    <plant-operator-breadcrumbs
+      [items]="[{ label: 'trucks', link: '/planta/trucks' }]"
+    />
+    <trucks-action-button
+      [allTrucks]="trucksEntriesStore.trucksList()"
+      [locations]="locationsStore.origins()"
+      [hoppers]="hoppersStore.locationHoppers()"
+      [residueTypes]="locationsStore.selectedLocation()?.residueTypes"
+      (onNewTruck)="handleCreateTruck($event)"
+    />
+  </div>
+  <app-page-header
+    pageTitle="Camiones"
+    [areFiltersOpen]="areFiltersOpen"
+    (onFiltersClick)="handleFiltersOpen()"
+    >
+    </app-page-header>
+    <plant-operators-trucks-filters />
+  @if(isLoading) {
+  <app-loader />
+  } @else { @if(trucks.length !== 0) {
+  <div class="new-page__content">
+    @for(truck of trucks; track truck.id){
+    <trucks-card [truck]="truck" (onDelete)="handleTruckDelete($event)" />
+    }
+  </div>
+  } @else {
+  <app-empty-page-message [message]="'trucks.emptyMessage' | translate" />
+  } }
+</div>

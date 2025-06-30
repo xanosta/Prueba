@@ -1,0 +1,13 @@
+<div class="truck-info-card">
+  <div class="truck-info-card__layout">
+    <div class="truck-info-card__plate">
+      <truck-plate [plateNumber]="plate()" />
+    </div>
+    <p-divider class="truck-info-card__divider--horizontal"></p-divider>
+    <p-divider class="truck-info-card__divider--vertical" layout="vertical"></p-divider>
+    <div class="truck-info-card__details">
+      <p class="truck-info-card__company">{{ company() }}</p>
+      <p class="truck-info-card__model text-gray-light font-md">{{ model() }}</p>
+    </div>
+  </div>
+</div>
