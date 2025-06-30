@@ -1,0 +1,86 @@
+@let truck = trucksEntriesStore.selectedTruck();
+@if(!truck) { }
+@else {
+<div class="page-redesing">
+  <div class="new-page__breadcrumbs">
+    <plant-operator-breadcrumbs
+      [items]="[
+        { label: 'trucks', link: '/planta/trucks' },
+        { label: truck.id.toString(), link: '/planta/trucks/' + truck.id }
+      ]"
+    />
+  </div>
+  <app-page-header pageTitle="Detalle de camión" [areFiltersOpen]="true" />
+
+  <div class="detail-page">
+    <div class="detail-page__header detail-page__header-grid">
+      <app-card>
+        <truck-info-card
+          [plate]="truck.plate"
+          [model]="truck.model"
+          [company]="truck.vehicleCompanyName"
+        />
+      </app-card>
+      <app-card
+        [title]="'truck.form.entrySection.fields.residueWeight' | translate"
+        [backgroundColor]="'green'"
+        [titleColor]="'dark'"
+      >
+      <p class="fw-bolder font-3xl detail-truck-page__weight">
+        {{ truck.weightResidue }}
+      </p>
+      </app-card>
+      <app-card>
+        <app-labeled-info
+          [label]="'truck.entryDate' | translate"
+          [data]="(truck.datetimeArrival | date:'dd/MM/yyyy HH:mm') ?? '-'"
+        />
+        <app-labeled-info
+          [label]="'truck.exitDate' | translate"
+          [data]="(truck.datetimeExit | date:'dd/MM/yyyy HH:mm') ?? '-'"
+        />
+      </app-card>
+      <app-card>
+        <states-card
+          [location]="truck.currentState"
+          [validated]="truck.isValidated"
+        />
+      </app-card>
+    </div>
+    <div class="detail-page__aside detail-page__aside-flex">
+      <app-card
+        [title]="'truck.actions' | translate"
+      >
+        <truck-actions-card
+          [truckPlate]="truck.plate"
+          [companyName]="truck.vehicleCompanyName"
+          [isValidated]="truck.isValidated"
+          [deleteDisabled]="truck.canBeRemoved"
+          (onValidatePin)="onValidatePin()"
+          (onDelete)="onTruckDelete()"
+        />
+
+      </app-card>
+      <app-card
+        [title]="'truck.form.containerSection.fields.container' | translate"
+      >
+        <containers-detail-card [containers]="truck.containers" />
+      </app-card>
+    </div>
+    <div class="detail-page__body">
+      <app-card
+        [title]="'truck.form.entrySection.label' | translate"
+      >
+        <plant-trucks-update-form
+          class="detail-page__form"
+          [truck]="truck"
+          [locations]="locationsStore.origins()"
+          [hoppers]="hoppersStore.locationHoppers()"
+          [residueTypes]="locationsStore.selectedLocation()?.residueTypes"
+          (onTruckUpdate)="onTruckUpdate($event)"
+        ></plant-trucks-update-form>
+      </app-card>
+    </div>
+  </div>
+</div>
+}
