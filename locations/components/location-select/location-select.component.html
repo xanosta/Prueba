@@ -1,0 +1,17 @@
+@let userLocations = locationsStore.locations();
+@let selectedLocation = locationsStore.selectedLocation();
+@if (userLocations.length === 1 &&
+selectedLocation) {
+<h2 class="font-xl text-dark-blue fw-bold">
+  {{ selectedLocation.name }}
+</h2>
+} @else {
+<p-multiselect
+  [ngModel]="selectedLocation ? [selectedLocation.locationId] : []"
+  (onChange)="onSelect($event.value)"
+  [options]="userLocations"
+  optionLabel="name"
+  optionValue="locationId"
+  [selectionLimit]="1"
+/>
+}
