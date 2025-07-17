@@ -1,0 +1,77 @@
+@use '../../../../../../../styles/colors' as *;
+@use '../../../../../../../styles/font-size' as *;
+@use '../../../../../../../styles/weights' as *;
+
+.pin-dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+
+  &__title {
+    @extend .font-md, .fw-semi-bold;
+    text-align: center;
+    color: $sogama2-black;
+  }
+
+
+  &__controls {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    gap: 0.5rem;
+  }
+}
+
+
+.p-inputotp {
+  gap: 0;
+  justify-content: center;
+}
+
+.custom-otp-input {
+  width: 48px;
+  height: 48px;
+  font-size: 24px;
+  appearance: none;
+  text-align: center;
+  transition: all 0.2s;
+  border-radius: 0;
+  border: 1px solid $sogama2-black;
+  background: transparent;
+  outline-offset: -2px;
+  outline-color: transparent;
+  border-right: 0 none;
+  transition: outline-color 0.3s;
+  color: $sogama2-black;
+}
+
+.custom-otp-input:focus {
+  outline: 2px solid $sogama-green;
+}
+
+.custom-otp-input:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+.custom-otp-input:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-color: $sogama2-black;
+}
+
+.invalid-otp-format {
+  border: 1px solid red;
+}
+
+.invalid-otp-format:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-color: red;
+}

@@ -1,0 +1,54 @@
+@if (domiciliaryTruckEntriesStore.isValidationModalOpen()){
+<app-trucks-base-validation-modal (changeVisibilityOutput)="onChangeModalVisibility()">
+  <p-stepper [(value)]="activeStep" class="basis-[40rem]">
+    <p-step-list>
+      <p-step [value]="1" class="flex flex-row flex-auto gap-2" [disabled]="true">
+        <ng-template #content let-activateCallback="activateCallback" let-value="value">
+          <button class="btn-step" (click)="activateCallback()">
+            <span class="step" [class]="{
+                          'active-step': value == activeStep,
+                          'inactive-step': value != activeStep
+                        }">
+              <i class="pi pi-file"></i>
+            </span>
+          </button>
+        </ng-template>
+      </p-step>
+
+      <p-step [value]="2" class="flex flex-row flex-auto gap-2" [disabled]="true">
+        <ng-template #content let-activateCallback="activateCallback" let-value="value">
+          <button class="btn-step" (click)="activateCallback()">
+            <span class="step" [class]="{
+                          'active-step': value == activeStep,
+                          'inactive-step': value != activeStep
+                        }">
+              <i class="pi pi-check-circle"></i>
+            </span>
+          </button>
+        </ng-template>
+      </p-step>
+    </p-step-list>
+
+    <p-step-panels>
+      <p-step-panel [value]="1">
+        <ng-template #content let-activateCallback="activateCallback">
+          <domiciliary-truck-validation-form [truck]="domiciliaryTruckEntriesStore.selectedTruck()!"
+            [persistentDataForm]="outputEventData()" (continueOutput)="onContinue($event)"
+            (cancelOutput)="onChangeModalVisibility()" />
+        </ng-template>
+      </p-step-panel>
+
+      <p-step-panel [value]="2">
+        <ng-template #content let-activateCallback="activateCallback">
+          <domiciliary-truck-pin-dialog
+            [truckEntry]="{ 'id': domiciliaryTruckEntriesStore.selectedTruck()?.id!, 'companyName': domiciliaryTruckEntriesStore.selectedTruck()?.vehicleCompanyName!}"
+            [truckValidator]="validateTruck" (cancelOutput)="onChangeModalVisibility()" />
+          <div class="go-back-container">
+            <button (click)="onClickGoBack()"><i class="pi pi-arrow-left"></i></button>
+          </div>
+        </ng-template>
+      </p-step-panel>
+    </p-step-panels>
+  </p-stepper>
+</app-trucks-base-validation-modal>
+}

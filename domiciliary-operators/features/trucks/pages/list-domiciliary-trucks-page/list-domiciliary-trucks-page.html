@@ -1,0 +1,32 @@
+@let isLoading = trucksStore.isBusy();
+@let trucks = trucksStore.trucksList();
+@let areFiltersOpen = trucksStore.areTruckFiltersOpen();
+
+<app-header [pageTitle]="'trucks.title' | translate">
+
+    <div class="header__actions">
+        <button (click)="handleFiltersOpen()" class="btn header__filter-button"
+            [ngClass]="areFiltersOpen ? 'header__filter-button--open' : 'header__filter-button--close'">
+            {{ 'trucks.filterAction' | translate }}
+            <app-icon [name]="'filter-options'" />
+        </button>
+    </div>
+</app-header>
+
+<domiciliary-truck-validation-modal />
+<div class="container new-page">
+    <domiciliary-trucks-filters />
+    @if(isLoading) {
+    <app-loader />
+    } @else {
+    @if(trucks.length > 0) {
+    <div class="new-page__content">
+        @for(truck of trucks; track truck.id){
+        <domiciliary-truck-card [truck]="truck" (onValidate)="handleTruckValidate($event)" />
+        }
+    </div>
+    } @else {
+    <app-empty-page-message [message]="'trucks.emptyMessage' | translate" />
+    }
+    }
+</div>
