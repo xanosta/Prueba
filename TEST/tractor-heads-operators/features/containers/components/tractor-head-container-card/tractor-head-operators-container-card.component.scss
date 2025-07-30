@@ -1,0 +1,146 @@
+@use '../../../../../../../styles/font-size' as *;
+@use '../../../../../../../styles/colors' as *;
+@use '../../../../../../../styles/weights' as *;
+
+:host {
+  container-type: inline-size;
+  container-name: container-card;
+}
+
+
+.container-card {
+  background: $sogama2-white2;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+  color: $sogama2-gray-dark4;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    padding: .75rem 1.25rem;
+    background: $sogama2-brown-light;
+  }
+
+  &__code {
+    @extend .fw-bold;
+    font-size: 1.75rem;
+
+    color: $sogama2-black-light;
+    line-height: 1;
+  }
+
+  &__chips {
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+  }
+
+  &__body {
+    display: grid;
+    grid-template-columns:
+      minmax(180px, 1fr) minmax(240px, 1.2fr) minmax(200px, .9fr) minmax(160px, .7fr) auto;
+    column-gap: 2rem;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+  }
+}
+
+.field {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  row-gap: .25rem;
+  column-gap: .4rem;
+
+  &__label {
+    @extend .fw-normal, .font-lg;
+    color: $sogama2-black-light;
+  }
+
+  &__value {
+    @extend .fw-semi-bold, .font-lg;
+    color: $sogama2-gray-dark4;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.btn-reserve {
+  border: none;
+  border-radius: 6px;
+  padding: .6rem 1.4rem;
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+  background: $sogama2-green;
+  color: $sogama2-white2;
+  transition: opacity .15s;
+
+  &:hover:not(:disabled) {
+    opacity: .9;
+  }
+
+  &:disabled {
+    background: #c9c9c9;
+    cursor: not-allowed;
+  }
+}
+
+@container container-card (max-width: 1300px) {
+  .container-card__body {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 1rem;
+  }
+
+  .actions {
+    grid-column: 1 / -1;
+    justify-content: stretch;
+
+    .btn-reserve {
+      width: 100%;
+    }
+  }
+}
+
+@container container-card (max-width: 520px) {
+  .container-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .container-card__body {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    justify-content: stretch;
+
+    .btn-reserve {
+      width: 100%;
+    }
+  }
+
+  .field {
+    grid-template-columns: max-content 1fr;
+  }
+}
+
+.text {
+
+  &--success {
+    color: $sogama2-green;
+  }
+
+  &--danger {
+    color: $sogama2-red-dark;
+  }
+}

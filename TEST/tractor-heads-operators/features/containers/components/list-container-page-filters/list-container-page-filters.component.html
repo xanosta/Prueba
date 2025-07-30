@@ -1,0 +1,26 @@
+@let areFilterOpen = containersStore.areFiltersOpen();
+@if(areFilterOpen) {
+<div class="new-page__filters">
+  <div class="new-page__filters-close-control">
+    <app-close-button (onClick)="handleFiltersClose()" />
+  </div>
+
+  <form [formGroup]="filters" class="filters" [@filterCollapse]>
+    <div class="filter">
+      <label class="filter__label">
+        {{ "tractorHeadOperators.container.filters.location" | translate }}
+      </label>
+      <p-select formControlName="locationId" [options]="sortedLocations()" optionLabel="name"
+        optionValue="locationId" />
+    </div>
+    <div class="filters__controls">
+      <button (click)="applyFilters()" class="btn filters__control-button filters__apply-button">
+        {{ "tractorHeadOperators.container.filters.apply" | translate }}
+      </button>
+      <button (click)="resetFilters()" class="btn filters__control-button filters__reset-button">
+        {{ "tractorHeadOperators.container.filters.reset" | translate }}
+      </button>
+    </div>
+  </form>
+</div>
+}

@@ -1,0 +1,45 @@
+@let containers = containersStore.pickUpList();
+@let isModalOpen = containersStore.isSchedulePickUpModalOpen();
+@let destinations = containersStore.destinations();
+@let pagination = containersStore.paginationInfo();
+@let currentPage = containersStore.filters().currentPage;
+@let areFiltersOpen = containersStore.areFiltersOpen();
+
+<app-header [pageTitle]="'containers.title' | translate">
+  <div class="header__actions">
+    <button (click)="handleFiltersOpen()" class="btn header__filter-button"
+      [ngClass]="areFiltersOpen ? 'header__filter-button--open' : 'header__filter-button--close'">
+      {{ 'containers.filterAction' | translate }}
+      <app-icon [name]="'filter-options'" />
+    </button>
+  </div>
+</app-header>
+
+<div class="container new-page">
+
+  <tractore-heads-operator-containers-filter />
+
+  <p-dialog header="Reservar recogida de contenedor" [modal]="true" [visible]="isModalOpen" [closable]="false"
+    [style]="{ 'min-width': '50vw' }" [contentStyle]="{
+      overflow: 'visible'
+    }">
+    @if(selectedContainer()) {
+    <tractor-head-operators-schedule-pick-up-form [tractorHeadList]="availableTractorHeads()"
+      [destinations]="destinations" [container]="selectedContainer()!" (onCancel)="handlePickUpFormCancel()"
+      (onSubmit)="handlePickUpFormSubmit($event)" />
+    }
+  </p-dialog>
+
+
+  @if(containers.length > 0 ) {
+
+  @for(container of containers; track container.id) {
+  <tractor-head-operators-container-card [container]="container" (onBooking)="handlePickUpBooking($event)" />
+  }
+
+  <p-paginator (onPageChange)="onPageChange($event)" [first]="(currentPage - 1) * pagination.pageSize"
+    [rows]="pagination.pageSize" [totalRecords]="pagination.total" [rowsPerPageOptions]="[10, 20, 30]" />
+  } @else {
+  <app-empty-page-message [message]="'containers.emptyMessage' | translate" />
+  }
+</div>
