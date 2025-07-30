@@ -1,0 +1,15 @@
+<p-toast />
+<p-confirmDialog [style]="{ width: '20vw' }" [baseZIndex]="10000"></p-confirmDialog>
+<div class="layout">
+  <div class="layout__header">
+    <app-navbar [entries]="navbarEntries" />
+  </div>
+  <div class="layout__body">
+    <div class="layout__content">
+      <router-outlet />
+    </div>
+    <footer class="layout__footer bg-green">
+      <app-footer />
+    </footer>
+  </div>
+</div>
