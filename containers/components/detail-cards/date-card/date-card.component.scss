@@ -1,0 +1,22 @@
+@use '../../../../../../../../styles/colors' as *;
+@use '../../../../../../../../styles/font-size' as *;
+@use '../../../../../../../../styles/weights' as *;
+
+.container-dates-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+  height: 100%;
+
+  &__date-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__date {
+    @extend .fw-semi-bold, .font-lg;
+    align-self: center;
+  }
+}

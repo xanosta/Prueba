@@ -1,0 +1,78 @@
+@let areFiltersOpen = containersStore.areFiltersOpen();@if(areFiltersOpen) {
+<div class="new-page__filters">
+  <div class="new-page__filters-close-control">
+    <app-close-button (onClick)="handleFiltersClose()" />
+  </div>
+
+  <form [formGroup]="filters" class="filters" [@filterCollapse]>
+    <div class="filters__body">
+      <div class="filter">
+        <label for="containerCode" class="filter__label">Codigo</label>
+        <input formControlName="containerCode" id="containerCode" pInputText />
+      </div>
+      <div class="filter">
+        <label for="state" class="filter__label">Ubicacion</label>
+        <p-select
+          formControlName="state"
+          [options]="containerStateOptions"
+          id="state"
+        />
+      </div>
+      <div class="filter">
+        <label for="dates" class="filter__label">Fechas</label>
+        <p-datepicker
+          formControlName="dates"
+          id="dates"
+          selectionMode="range"
+          styleClass="form-group__field"
+        />
+      </div>
+      <div class="filter">
+        <label for="residueTypes" class="filter__label">Tipo de residuo</label>
+        <p-multiselect
+          formControlName="residueTypes"
+          id="residueTypes"
+          [options]="residueTypes()"
+        />
+      </div>
+      <div class="filter">
+        <label for="" class="filter__label">Camion</label>
+        <input formControlName="truckPlate" pInputText />
+      </div>
+      <div class="filter">
+        <label for="origin" class="filter__label">Orixe</label>
+        <p-select
+          formControlName="origin"
+          id="origin"
+          [options]="locations()"
+        />
+      </div>
+      <div class="filter">
+        <label for="tractorHeadPlate" class="filter__label"
+          >Cabeza tractora</label
+        >
+        <input
+          formControlName="tractorHeadPlate"
+          id="tractorHeadPlate"
+          pInputText
+        />
+      </div>
+    </div>
+    <div class="filters__controls">
+      <button
+        (click)="applyFilters()"
+        class="btn filters__control-button filters__apply-button"
+      >
+        Aplicar filtros
+      </button>
+      <button
+        (click)="resetFilters()"
+        class="btn filters__control-button filters__reset-button"
+      >
+        Restablecer filtros
+      </button>
+    </div>
+  </form>
+</div>
+
+}

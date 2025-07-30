@@ -1,0 +1,9 @@
+<div class="origins-container-card">
+  @if (!origins()?.length) {
+  <p>-</p>
+  } @else { @for (cont of origins()!; track $index) {
+  <p class="origins-container-card__container">
+    {{ cont }}
+  </p>
+  } }
+</div>

@@ -1,0 +1,86 @@
+@let container = this.containerStore.selectedContainer();
+
+<app-header
+  [pageTitle]="'container.title' | translate"
+>
+  <plant-operator-breadcrumbs [items]="breadcrumbs()" />
+</app-header>
+
+<div class="container new-page">
+@if(container) {
+  <div class="detail-page">
+    <div class="detail-page__header detail-page__header-grid">
+      <app-card [title]="'container.title' | translate">
+        <container-info-card
+          [containerCode]="container.code"
+          [lastHopper]="
+            container.lastLoadHopper ? container.lastLoadHopper : '-'
+          "
+        />
+      </app-card>
+      <app-card
+        [title]="'container.residueWeight' | translate"
+        [backgroundColor]="'green'"
+        [titleColor]="'dark'"
+      >
+        <container-weight-card [weight]="container.currentWeight" />
+      </app-card>
+      <app-card>
+        <container-dates-card
+          [labelEntry]="'container.entry' | translate"
+          [entryDate]="container.entry"
+          [labelExit]="'container.exit' | translate"
+          [exitDate]="container.exit"
+        />
+      </app-card>
+      <app-card>
+        <container-states-card
+          [location]="container.state"
+          [residueType]="container.residueTypes"
+        />
+      </app-card>
+    </div>
+    <div class="detail-page__aside detail-page__aside-flex">
+      <app-card>
+        <div
+          class="app-card__title app-card__title-light container-detail-page__card-title"
+        >
+          <i class="pi pi-map"></i>
+          <span>
+            {{ "container.origin" | translate }}
+          </span>
+        </div>
+        <container-origins-detail-card [origins]="container.origins" />
+      </app-card>
+    </div>
+    <div class="detail-page__body">
+      <app-card>
+        <div class="container-detail-page__body">
+          <div class="card-container-redesing container-detail-page__cards">
+            @for(load of container.loads; track load.id) {
+            <containers-load-card
+              [load]="load"
+              (unloadWeightChange)="unloadWeightChangeHandler($event)"
+            />
+            } @empty {
+            <app-empty-page-message
+              [message]="'container.emptyMessage' | translate"
+            />
+            }
+          </div>
+        </div>
+        <div class="container-detail-page__actions">
+          <div class="form__controls">
+            <button (click)="discardChanges()" class="btn btn__secondary">
+              {{ "container.form.actions.cancel" | translate }}
+            </button>
+            <button (click)="saveChanges()" class="btn btn__primary">
+              {{ "container.form.actions.submit" | translate }}
+            </button>
+          </div>
+        </div>
+      </app-card>
+    </div>
+  </div>
+  }
+</div>

@@ -1,0 +1,28 @@
+@use '../../../../../../../../styles/colors' as *;
+@use '../../../../../../../../styles/weights' as *;
+@use '../../../../../../../../styles/borders' as *;
+
+.container-states-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+  height: 100%;
+
+  &__container-chip {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &__chip {
+    @extend .text-black, .fw-bold, .border-green, .br-large;
+    padding: 0.5rem 1rem;
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    border-width: 0.15rem;
+    border-style: solid;
+  }
+}

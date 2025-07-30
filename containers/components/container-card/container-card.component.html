@@ -1,0 +1,84 @@
+<div
+  class="container-card card--clickable"
+  (click)="handleClick()"
+  [ngClass]="{
+    'container-card--border-red': container().needToBeRemovedFromLocation
+  }"
+>
+  <div class="container-card__header">
+    <p class="container-card__header-plate">{{ container().code }}</p>
+
+    <containers-location-chip
+      class="container-card__header-state"
+      [location]="container().state"
+    />
+    @if(container().residueTypes.length > 0){
+    <div class="container-card__header-residue">
+      @for(residueType of container().residueTypes; track residueType) {
+      <residues-residue-type-chip
+        class="container-card__header-chip"
+        [residueType]="residueType"
+      />
+      }
+    </div>
+    } @else {
+    <p
+      class="container-card__header-residue container-card__header-residue--empty"
+    >
+      {{ "components.containers.card.empty" | translate }}
+    </p>
+    }
+  </div>
+  <div class="container-card__body">
+    <div class="container-card__data-row">
+      <div class="container-card__data-column">
+        <span class="container-card__data-label">{{
+          "components.containers.card.entry" | translate
+        }}</span>
+        <p class="container-card__data-value">{{ entryDatetime() }}</p>
+      </div>
+      <div
+        class="container-card__data-column container-card__data-column--align-right"
+      >
+        <span class="container-card__data-label">{{
+          "components.containers.card.exit" | translate
+        }}</span>
+        <p class="container-card__data-value">{{ exitDatetime() }}</p>
+      </div>
+    </div>
+    <div class="container-card__data-row">
+      <div class="container-card__data-column">
+        <span class="container-card__data-label">{{
+          "components.containers.card.currentWeight" | translate
+        }}</span>
+        <p class="container-card__data-value">
+          {{ container().currentWeight }} Kg
+          <span class="card__label"
+            >/ {{ container().maxCapacity }} Kg (máx.)</span
+          >
+        </p>
+      </div>
+    </div>
+    <div class="container-card__data-row">
+      <div class="container-card__data-column">
+        <span class="container-card__data-label">{{
+          "components.containers.card.loads" | translate
+        }}</span>
+        <p class="container-card__data-value">
+          {{ container().trucks.length ? container().trucks.join(", ") : "-" }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-card__footer">
+    <div class="container-card__data-column">
+      <span class="container-card__data-label">{{
+        "components.containers.card.origins" | translate
+      }}</span>
+      <p class="container-card__data-value">
+        {{ container().origins.length ? container().origins.join(", ") : "-" }}
+      </p>
+    </div>
+  </div>
+</div>
