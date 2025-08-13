@@ -1,0 +1,58 @@
+@use '../../../../../../../styles/breakpoints' as *;
+@use '../../../../../../../styles/font-size' as *;
+
+
+.container-stay {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+
+  @include breakpoint(lg) {
+    grid-template-columns: 30% 1fr;
+  }
+
+  &__unloads {
+    gap: 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+
+    @include breakpoint(sm) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include breakpoint(desktop) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
+
+.stay-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  @include breakpoint(lg) {
+    flex-direction: row;
+  }
+
+  &__dates {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &__date {
+    @extend .font-sm;
+  }
+
+  &__content {
+    @extend .font-md;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__icon {
+    width: 2rem;
+  }
+}

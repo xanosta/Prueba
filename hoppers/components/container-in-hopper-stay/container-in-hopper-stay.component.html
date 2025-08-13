@@ -1,0 +1,69 @@
+<div class="container-stay">
+  <div class="card-redesing card-redesing--clickable" (click)="handleContainerClick()">
+    <div class="card-redesing__header">
+      <div class="card-redesing__tags">
+        <p class="card-redesing__tag card-redesing__container-code">
+          {{ containerStay().containerCompact.code }}
+        </p>
+        <containers-location-chip
+          [location]="containerStay().containerCompact.state"
+        />
+        <div class="card-redesing__residue-tags">
+          @for(residueType of containerStay().containerCompact.residueTypes;
+          track residueType) {
+          <residues-residue-type-chip [residueType]="residueType" />
+          }
+        </div>
+        <div class="card-redesing__dates">
+          <p class="card-redesing__date">
+            {{
+              containerStay().containerCompact.startUnloadDatetime
+                | date : "d/M/yyyy - HH:mm"
+            }}
+          </p>
+          <p class="card-redesing__date">
+            @if(containerStay().containerCompact.state === inHopperState ||
+            !containerStay().containerCompact.endUnloadDatetime) {
+            {{ "hopper.now" | translate }}
+            } @else {
+            {{
+              containerStay().containerCompact.endUnloadDatetime
+                | date : "d/M/yyyy - HH:mm"
+            }}
+            }
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="card-redesing__body">
+      <div class="card-redesing__section">
+        <div class="stay-card__content">
+          <img class="stay-card__icon" src="images/assets/icons/Weight.svg" />
+          <span class="text-gray">
+            {{ "components.hoppers.container.content" | translate }}:
+            <span class="fw-bold text-black"
+              >{{ containerStay().containerCompact.currentWeight
+              }}<span class="font-sm fw-light text-gray"
+                >/{{ containerStay().containerCompact.capacity }} (máx.)</span
+              ></span
+            >
+          </span>
+        </div>
+
+        <hr class="card-redesing__separator" />
+
+        <graphic
+          style="width: 100%"
+          [containerLoads]="containerStay().containerLoads"
+          [containerCapacity]="containerStay().containerCompact.capacity"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="container-stay__unloads">
+    @for(truckUnload of containerStay().truckUnloads; track truckUnload.id) {
+    <hoppers-truck-unload [truckLoad]="truckUnload" />
+    }
+  </div>
+</div>

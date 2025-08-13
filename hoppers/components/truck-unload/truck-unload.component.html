@@ -1,0 +1,45 @@
+<div class="truck-unload">
+  <div class="card-redesing card-redesing--clickable">
+    <div class="card-redesing__header">
+      <truck-plate
+        [plateNumber]="truckLoad().vehiclePlate"
+        class="truck-unload__plate"
+      />
+      @for(residueType of truckLoad().residueTypes; track residueType) {
+      <residues-residue-type-chip [residueType]="residueType" />
+      }
+    </div>
+    <div class="card-redesing__body">
+      <div class="card-redesing__section">
+        <div class="card-redesing__field">
+          <span class="card-redesing__label">{{
+            "components.hoppers.truckLoad.weight" | translate
+          }}</span>
+          <p class="card-redesing__value">{{ truckLoad().unloadWeight }} Kg</p>
+        </div>
+        <div class="truck-unload__dates">
+          <p class="date font-sm text-gray-light">
+            {{ truckLoad().startUnloadDatetime | date : "d/M/yyyy HH:mm" }}
+          </p>
+          <p class="date font-sm text-gray-light">
+            {{ truckLoad().endUnloadDatetime | date : "d/M/yyyy HH:mm" }}
+          </p>
+        </div>
+      </div>
+
+      <hr class="card-redesing__separator" />
+
+      <div class="card-redesing__section">
+        <div class="card-redesing__field">
+          <div class="truck-unload__origin">
+            <img
+              class="truck-unload__icon"
+              src="images/assets/icons/location.svg"
+            />
+            <p class="card-redesing__value">{{ origins() }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

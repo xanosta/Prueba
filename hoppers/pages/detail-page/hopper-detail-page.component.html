@@ -1,0 +1,49 @@
+@let hopperEvents = detailsHopperStore.selectedHopperEvents(); @let isLoading =
+detailsHopperStore.isLoading(); @let selectedHopper =
+detailsHopperStore.selectedHopper();
+
+<app-header [pageTitle]="selectedHopper?.name">
+  <plant-operator-breadcrumbs [items]="breadcrumbs()" />
+  <div class="header__actions">
+    <button
+      (click)="changeFiltersVisibility()"
+      class="btn header__filter-button"
+      [ngClass]="
+        filtersVisible()
+          ? 'header__filter-button--open'
+          : 'header__filter-button--close'
+      "
+    >
+      {{ "hoppers.filters.label" | translate }}
+      <app-icon [name]="'filter-options'" />
+    </button>
+  </div>
+</app-header>
+<div class="container page-redesing">
+  @if (filtersVisible()) {
+  <div class="page-redesing__filters-open form-redesing">
+    <span
+      class="form-redesing__close-button"
+      (click)="changeFiltersVisibility()"
+      ><img src="images/assets/icons/aspa.svg" alt="Cerrar"
+    /></span>
+    <plant-operator-hoppers-detail-filters />
+  </div>
+  }
+
+  <div class="page-redesing__content">
+    @if (isLoading){
+    <app-loader />
+    } @else { @for(event of hopperEvents; track event.containerCompact.id) {
+    <div class="row">
+      <hoppers-container-stay [containerStay]="event" />
+    </div>
+    } @empty {
+    <div class="row">
+      <div class="d-flex justify-content-center">
+        <p>{{ "hopper.emptyMessage" | translate }}</p>
+      </div>
+    </div>
+    } }
+  </div>
+</div>
