@@ -1,0 +1,27 @@
+.alert-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  container-type: inline-size;
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 10px;
+  }
+
+  &__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+    @container (min-width: 400px) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+}
+
+.text-center {
+  text-align: center;
+}

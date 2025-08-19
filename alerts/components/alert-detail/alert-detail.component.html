@@ -1,0 +1,55 @@
+<p-drawer
+  [visible]="true"
+  position="right"
+  [modal]="true"
+  [dismissible]="true"
+  [style]="{width: '50vw', minWidth: '400px'}"
+  [header]="('enums.alertsTypes.' + alert()?.type) | translate"
+  (onHide)="handleClose()"
+  >
+
+  <div class="alert-detail">
+    <severity-tag
+      [value]="'enums.alertsSeverities.' + alert()?.severity | translate"
+      [severity]="alert()?.severity?.toLowerCase() || ''">
+    </severity-tag>
+    <div class="alert-detail__grid">
+      <div class="alert-detail__group">
+        <label class="fw-bold">{{ 'alert.date' | translate }}</label>
+        <p>{{ alert()?.createdDateTime | date:'dd/MM/yyyy HH:mm' }}</p>
+      </div>
+
+      <div class="alert-detail__group">
+        <label class="fw-bold">{{ 'alert.vehicle' | translate }}</label>
+        <p>{{ alert()?.vehicle }}</p>
+      </div>
+
+      <div class="alert-detail__group">
+      <label class="fw-bold">{{ 'alert.container' | translate }}</label>
+      <p>{{ alert()?.container }}</p>
+      </div>
+      </div>
+
+      <div class="alert-detail__group">
+      <label class="fw-bold">{{ 'alert.additionalInfo' | translate }}</label>
+      <p>{{ alert()?.additionalInfo }}</p>
+    </div>
+    @if (alert()?.updatedInfo?.differences?.length !== 0){
+      <div>
+        <div class="text-center">
+          <hr class="divider">
+          <label class="fw-bold">{{ 'alert.updatedInfo' | translate}}</label>
+        </div>
+        <div>
+          @for (item of alert()?.updatedInfo?.differences; track $index) {
+            <div class="alert-detail__group">
+              <label class="alert-detail__info-label" class="fw-semi-bold">{{ 'alert.' + item.field | translate }}</label>
+              <p class="alert-detail__info-value">{{ item.field.toLowerCase().includes('weight') ? item.before + " kg" : item.before }}</p>
+            </div>
+          }
+        </div>
+      </div>
+      
+    }
+    </div>
+</p-drawer>

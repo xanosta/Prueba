@@ -1,0 +1,62 @@
+@let areFiltersOpen = alertsStore.areAlertFiltersOpen(); @let isLoading = alertsStore.isBusy(); @let alerts
+= alertsStore.listAlertsViewModel();
+
+<app-header
+  [pageTitle]="'alerts.title' | translate"
+>
+  <plant-operator-breadcrumbs
+    [items]="breadcrumbs"
+  />
+  <div class="header__actions">
+    <button (click)="handleFiltersOpen()"
+      class="btn header__filter-button"
+      [ngClass]="areFiltersOpen ? 'header__filter-button--open' : 'header__filter-button--close'"
+    >
+      {{ 'alerts.filterAction' | translate }}
+      <app-icon
+        [name]="'filter-options'"
+      />
+    </button>
+    </div>
+</app-header>
+
+<div class="container new-page">
+  <plant-operators-alert-filters />
+  @if(isLoading) {
+  <app-loader />
+  } @else { @if(!alerts.length) {
+  <app-empty-page-message [message]="'alerts.emptyMessage' | translate" />
+  } @else {
+  <div class="new-page__content">
+    @for(alert of alerts; track alert.id) {
+    <plant-operator-alert-card
+      [alert]="alert"
+      (onClick)="handleSelectedAlert($event)"
+    >
+      @if(alert.vehicle || alert.container){
+        <hr class="divider" />
+      }
+      <div class="card__section">
+        @if(alert.vehicle){
+          <div class="alert-card__group">
+            <p class="fw-semi-bold">{{'alerts.alert.vehicle' | translate}}</p>
+            <p>{{alert.vehicle}}</p>
+          </div>
+        }
+        @if(alert.container){
+          <div class="alert-card__group">
+            <p class="fw-semi-bold">{{'alerts.alert.container' | translate}}</p>
+            <p>{{alert.container}}</p>
+          </div>
+        }
+      </div>
+    </plant-operator-alert-card>
+    }
+  </div>
+  @if (alertsStore.selectedAlertViewModel() && drawerVisible()) {
+    <plant-operator-alert-detail
+      [alert]="alertsStore.selectedAlertViewModel()"
+      (onClose)="closeDrawer()" />
+  }
+  } }
+</div>
