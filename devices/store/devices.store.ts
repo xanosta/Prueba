@@ -57,6 +57,31 @@ export const DevicesStore = signalStore(
       )
     );
 
+    const createUpdateHandler = <TPayload>(
+      updateFn: (id: number, payload: TPayload) => Observable<unknown>,
+      onSuccess: string | ((id: number, payload: TPayload) => void),
+      onError?: (error: unknown) => void
+    ) =>
+      (id: number, payload: TPayload) => {
+        patchState(store, setBusyUpdater(true));
+        updateFn(id, payload).subscribe({
+          next: () => {
+            if (typeof onSuccess === 'string') {
+              console.log(onSuccess);
+            } else {
+              onSuccess(id, payload);
+            }
+          },
+          complete: () => {
+            _fetchDevices(store.filters());
+          },
+          error: error => {
+            onError?.(error);
+            patchState(store, setBusyUpdater(false));
+          },
+        });
+      };
+
     const createEntityFetcher = <T>(
       serviceCall: (id: number) => Observable<T>,
       updater: (entity: T | null) => PartialStateUpdater<DevicesSlice>
@@ -92,6 +117,41 @@ export const DevicesStore = signalStore(
     const _getWeighingPlatformById = createEntityFetcher(
       id => store._devicesService.getWeighingPlatformById(id),
       setSelectedWeighingPlatformUpdater
+    );
+
+    const updateDeviceHandler = createUpdateHandler<DeviceUpdateRequest>(
+      (id, payload) => store._devicesService.updateDevice(id, payload),
+      'Dispositivo actualizado con éxito',
+      error => {
+        console.error('Error al actualizar el dispositivo', error);
+      }
+    );
+
+    const updateHopperHandler = createUpdateHandler(
+      (id: number, payload: unknown) =>
+        store._devicesService.updateHopper(id, payload),
+      'Hopper actualizado con éxito',
+      error => {
+        console.error('Error al actualizar el hopper', error);
+      }
+    );
+
+    const updateEntryAreaHandler = createUpdateHandler(
+      (id: number, payload: unknown) =>
+        store._devicesService.updateEntryArea(id, payload),
+      'Entry Area actualizada con éxito',
+      error => {
+        console.error('Error al actualizar el entry area', error);
+      }
+    );
+
+    const updateWeighingPlatformHandler = createUpdateHandler(
+      (id: number, payload: unknown) =>
+        store._devicesService.updateWeighingPlatform(id, payload),
+      'Weighing Platform actualizada con éxito',
+      error => {
+        console.error('Error al actualizar la weighing platform', error);
+      }
     );
 
     _fetchDevices(store.filters);
@@ -144,58 +204,10 @@ export const DevicesStore = signalStore(
       getWeighingPlatformById: (id: number) => {
         _getWeighingPlatformById(id);
       },
-      updateDevice: (id: number, payload: DeviceUpdateRequest) => {
-        patchState(store, setBusyUpdater(true));
-        store._devicesService.updateDevice(id, payload).subscribe({
-          next: () => {
-            console.log('Dispositivo actualizado con éxito');
-            _fetchDevices(store.filters());
-          },
-          error: err => {
-            console.error('Error al actualizar el dispositivo', err);
-            patchState(store, setBusyUpdater(false));
-          },
-        });
-      },
-      updateHopper: (id: number, payload: any) => {
-        patchState(store, setBusyUpdater(true));
-        store._devicesService.updateHopper(id, payload).subscribe({
-          next: () => {
-            console.log('Hopper actualizado con éxito');
-            _fetchDevices(store.filters());
-          },
-          error: err => {
-            console.error('Error al actualizar el hopper', err);
-            patchState(store, setBusyUpdater(false));
-          },
-        });
-      },
-      updateEntryArea: (id: number, payload: any) => {
-        patchState(store, setBusyUpdater(true));
-        store._devicesService.updateEntryArea(id, payload).subscribe({
-          next: () => {
-            console.log('Entry Area actualizada con éxito');
-            _fetchDevices(store.filters());
-          },
-          error: err => {
-            console.error('Error al actualizar el entry area', err);
-            patchState(store, setBusyUpdater(false));
-          },
-        });
-      },
-      updateWeighingPlatform: (id: number, payload: any) => {
-        patchState(store, setBusyUpdater(true));
-        store._devicesService.updateWeighingPlatform(id, payload).subscribe({
-          next: () => {
-            console.log('Weighing Platform actualizada con éxito');
-            _fetchDevices(store.filters());
-          },
-          error: err => {
-            console.error('Error al actualizar la weighing platform', err);
-            patchState(store, setBusyUpdater(false));
-          },
-        });
-      },
+      updateDevice: updateDeviceHandler,
+      updateHopper: updateHopperHandler,
+      updateEntryArea: updateEntryAreaHandler,
+      updateWeighingPlatform: updateWeighingPlatformHandler,
       toggleFiltersOpen: (isOpen?: boolean) => {
         patchState(store, toggleFiltersUpdater(isOpen));
       },
