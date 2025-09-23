@@ -7,9 +7,12 @@ import {
   withProps,
   withState,
 } from '@ngrx/signals';
+import type { PartialStateUpdater } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tap, switchMap, pipe } from 'rxjs';
+import type { Observable } from 'rxjs';
 import { devicesSliceInitialValue } from './devices.slice';
+import type { DevicesSlice } from './devices.slice';
 import { DevicesService } from '../services/devices.service';
 import { setBusyUpdater } from './updaters/set-busy.updater';
 import { setDevicesUpdater } from './updaters/set-devices.updater';
@@ -54,60 +57,41 @@ export const DevicesStore = signalStore(
       )
     );
 
-    const _getDeviceById = rxMethod<number>(
-      pipe(
-        tap(() => patchState(store, setBusyUpdater(true))),
-        switchMap(id =>
-          store._devicesService.getDeviceById(id).pipe(
-            tap(device => {
-              patchState(store, setSelectedDeviceUpdater(device));
-              patchState(store, setBusyUpdater(false));
-            })
+    const createEntityFetcher = <T>(
+      serviceCall: (id: number) => Observable<T>,
+      updater: (entity: T | null) => PartialStateUpdater<DevicesSlice>
+    ) =>
+      rxMethod<number>(
+        pipe(
+          tap(() => patchState(store, setBusyUpdater(true))),
+          switchMap(id =>
+            serviceCall(id).pipe(
+              tap(entity => {
+                patchState(store, updater(entity), setBusyUpdater(false));
+              })
+            )
           )
         )
-      )
+      );
+
+    const _getDeviceById = createEntityFetcher(
+      id => store._devicesService.getDeviceById(id),
+      setSelectedDeviceUpdater
     );
 
-    const _getHopperById = rxMethod<number>(
-      pipe(
-        tap(() => patchState(store, setBusyUpdater(true))),
-        switchMap(id =>
-          store._devicesService.getHopperById(id).pipe(
-            tap(hopper => {
-              patchState(store, setSelectedHopperUpdater(hopper));
-              patchState(store, setBusyUpdater(false));
-            })
-          )
-        )
-      )
+    const _getHopperById = createEntityFetcher(
+      id => store._devicesService.getHopperById(id),
+      setSelectedHopperUpdater
     );
 
-    const _getEntryAreaById = rxMethod<number>(
-      pipe(
-        tap(() => patchState(store, setBusyUpdater(true))),
-        switchMap(id =>
-          store._devicesService.getEntryAreaById(id).pipe(
-            tap(entryArea => {
-              patchState(store, setSelectedEntryAreaUpdater(entryArea));
-              patchState(store, setBusyUpdater(false));
-            })
-          )
-        )
-      )
+    const _getEntryAreaById = createEntityFetcher(
+      id => store._devicesService.getEntryAreaById(id),
+      setSelectedEntryAreaUpdater
     );
 
-    const _getWeighingPlatformById = rxMethod<number>(
-      pipe(
-        tap(() => patchState(store, setBusyUpdater(true))),
-        switchMap(id =>
-          store._devicesService.getWeighingPlatformById(id).pipe(
-            tap(weighingPlatform => {
-              patchState(store, setSelectedWeighingPlatformUpdater(weighingPlatform));
-              patchState(store, setBusyUpdater(false));
-            })
-          )
-        )
-      )
+    const _getWeighingPlatformById = createEntityFetcher(
+      id => store._devicesService.getWeighingPlatformById(id),
+      setSelectedWeighingPlatformUpdater
     );
 
     _fetchDevices(store.filters);
