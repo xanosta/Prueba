@@ -1,0 +1,60 @@
+@let areFilterOpen = devicesStore.areFiltersOpen();
+<!-- "locationsStore.locations()" -->
+@if (areFilterOpen) {
+  <div class="new-page__filters">
+    <div class="new-page__filters-close-control">
+      <app-close-button (onClick)="handleFiltersClose()" />
+    </div>
+
+    <form [formGroup]="filters" class="filters">
+      <div class="filters__body">
+        <div class="filter">
+          <label class="filter__label" for="plantLocation">Planta</label>
+          <p-select
+            id="plantLocation"
+            formControlName="locationId"
+            [options]="[]"
+            optionLabel="name"
+            optionValue="locationId"
+            placeholder="Selecciona una planta"
+          ></p-select>
+        </div>
+
+        <div class="filter">
+          <label class="filter__label" for="areaType">
+            {{ 'admin.devices.filters.areaType' | translate }}
+          </label>
+          <p-select
+            id="areaType"
+            formControlName="areaType"
+            [options]="areaTypes"
+            optionLabel="label"
+            optionValue="value"
+          />
+        </div>
+
+        <div class="filter">
+          <label class="filter__label" for="deviceType">
+            {{ 'admin.devices.filters.deviceType' | translate }}
+          </label>
+          <p-select
+            id="deviceType"
+            formControlName="deviceType"
+            [options]="deviceTypes"
+            optionLabel="label"
+            optionValue="value"
+          />
+        </div>
+      </div>
+
+      <div class="filters__controls">
+        <button (click)="applyFilters()" class="btn filters__control-button filters__apply-button">
+          {{ 'admin.devices.filters.actions.apply' | translate }}
+        </button>
+        <button (click)="resetFilters()" class="btn filters__control-button filters__reset-button">
+          {{ 'admin.devices.filters.actions.reset' | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+}

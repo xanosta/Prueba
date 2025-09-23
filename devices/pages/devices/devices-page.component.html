@@ -1,0 +1,85 @@
+@let devices = devicesStore.devicesTree();
+@let pagination = devicesStore.paginationInfo();
+@let currentPage = devicesStore.filters().currentPage;
+@let areFiltersOpen = devicesStore.areFiltersOpen();
+@let isBusy = devicesStore.isBusy();
+
+<app-header [pageTitle]="'admin.devices.title' | translate">
+  <div class="header__actions">
+    <button
+      (click)="handleFiltersOpen()"
+      class="btn header__filter-button"
+      [ngClass]="areFiltersOpen ? 'header__filter-button--open' : 'header__filter-button--close'"
+    >
+      {{ 'admin.devices.filterAction' | translate }}
+      <app-icon [name]="'filter-options'" />
+    </button>
+  </div>
+</app-header>
+
+<div class="container new-page">
+  <app-list-devices-page-filters />
+  @if (isBusy) {
+    <p>Cargando...</p>
+  } @else {
+    @if (devices.length > 0) {
+      <p-treeTable [value]="devices" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template #caption>
+          <div class="devices-table-caption" id="devicesTableCaption">
+            <app-icon name="devices" class="devices-table-caption__icon"></app-icon>
+            <h2 class="devices-table-caption__title">
+              {{ 'admin.devices.title' | translate }}
+            </h2>
+            <span class="devices-table-caption__badge">{{ devices.length }}</span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th></th>
+            <th>{{ 'admin.devices.table.ip' | translate }}</th>
+            <th>{{ 'admin.devices.table.port' | translate }}</th>
+            <th>{{ 'admin.devices.table.power' | translate }}</th>
+            <th>{{ 'admin.devices.table.frequency' | translate }}</th>
+            <th>{{ 'admin.devices.table.actions' | translate }}</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+          <tr>
+            <td>
+              <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+              {{ rowData.name }}
+            </td>
+            <td>{{ rowData.ip || '-' }}</td>
+            <td>{{ rowData.port || '-' }}</td>
+            <td>{{ rowData.power ? rowData.power + ' W' : '-' }}</td>
+            <td>
+              {{ rowData.frequency ? rowData.frequency + ' MHz' : '-' }}
+            </td>
+            <td>
+              <div class="actions-cell">
+                @if (rowData.level > 0) {
+                  <button (click)="editNode(rowData)" class="action-button edit-button">
+                    <app-icon [name]="'edit'" fillColor="#96d1ed" strokeColor="white"></app-icon>
+                  </button>
+                  <button (click)="delete(rowData)" class="action-button delete-button">
+                    <app-icon [name]="'delete2'" fillColor="red" strokeColor="white"></app-icon>
+                  </button>
+                }
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-treeTable>
+
+      <p-paginator
+        (onPageChange)="onPageChange($event)"
+        [first]="(currentPage - 1) * pagination.pageSize"
+        [rows]="pagination.pageSize"
+        [totalRecords]="pagination.total"
+        [rowsPerPageOptions]="[10, 20, 30]"
+      />
+    } @else {
+      <app-empty-page-message [message]="'admin.devices.emptyMessage' | translate" />
+    }
+  }
+</div>
