@@ -1,42 +1,5 @@
-<form [formGroup]="editHopperForm" class="form">
-  <div class="form__section">
-    <div class="form-group">
-      <label for="name">Nombre</label>
-      <input id="name" type="text" pInputText formControlName="name" />
-    </div>
-    <div class="form-group">
-      <label for="location">Planta</label>
-      <p-select
-        id="location"
-        formControlName="locationId"
-        [options]="locationsStore.locations()"
-        optionLabel="name"
-        optionValue="locationId"
-        placeholder="Selecciona una planta"
-      ></p-select>
-    </div>
-  </div>
-
-  <div class="form__section">
-    <div class="form-group">
-      <label for="containerRfidDeviceId">ID Dispositivo RFID Contenedor</label>
-      <input
-        id="containerRfidDeviceId"
-        type="text"
-        pInputText
-        formControlName="containerRfidDeviceId"
-      />
-    </div>
-    <div class="form-group">
-      <label for="truckRfidDeviceId">ID Dispositivo RFID Camión</label>
-      <input id="truckRfidDeviceId" type="text" pInputText formControlName="truckRfidDeviceId" />
-    </div>
-  </div>
-</form>
-
-<div class="form__controls">
-  <button (click)="cancel()" class="btn btn__secondary">Cancelar</button>
-  <button (click)="save()" class="btn btn__primary" [disabled]="editHopperForm.invalid">
-    Guardar
-  </button>
-</div>
+<app-edit-entity-dialog
+  [entityKey]="'hopper'"
+  [formGroupName]="'editHopperForm'"
+  [fields]="hopperFields"
+></app-edit-entity-dialog>
