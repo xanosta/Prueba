@@ -29,6 +29,17 @@
   background-color: #eeeeee;
 }
 
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header__create-button {
+  display: inline-flex;
+  align-items: center;
+}
+
 .header__filter-button {
   display: inline-flex;
   align-items: center;

@@ -12,7 +12,7 @@ import { DeviceTreeNode } from '../../view-model/device.view-model';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { EditDeviceDialogComponent } from '../../components/edit-device-dialog/edit-device-dialog.component';
 import { filter } from 'rxjs';
-import { DeviceUpdateRequest } from '../../services/devices.service';
+import { DeviceCreateRequest, DeviceUpdateRequest } from '../../services/devices.service';
 import { EditHopperDialogComponent } from '../../components/edit-hopper-dialog/edit-hopper-dialog.component';
 import { EditEntryAreaDialogComponent } from '../../components/edit-entry-area-dialog/edit-entry-area-dialog.component';
 import { EditWeighingPlatformDialogComponent } from '../../components/edit-weighing-platform-dialog/edit-weighing-platform-dialog.component';
@@ -99,7 +99,7 @@ export class DevicesPageComponent {
         deviceId: deviceData.id,
         name: formData.name,
         type: formData.type,
-        locationId: formData.locationId,
+        locationId: Number(formData.locationId),
         ip: formData.ip,
         port: formData.port,
         power: formData.power,
@@ -116,6 +116,32 @@ export class DevicesPageComponent {
 
     dialogRef.onClose.subscribe(() => {
       this.devicesStore.clearSelectedDevice();
+    });
+  }
+
+  public openCreateDeviceDialog(): void {
+    const dialogRef = this.dialogService.open(EditDeviceDialogComponent, {
+      header: 'Alta dispositivo',
+      width: '50%',
+    });
+
+    dialogRef.onClose.pipe(filter(result => !!result)).subscribe(formData => {
+      const createPayload: DeviceCreateRequest = {
+        name: formData.name,
+        type: formData.type,
+        locationId: Number(formData.locationId),
+        ip: formData.ip,
+        port: formData.port,
+        power: formData.power ? Number(formData.power) : 0,
+        frequency: formData.frequency ? Number(formData.frequency) : 0,
+        positionDTO: {
+          id: 0,
+          plantPosition: formData.plantPosition,
+          deviceTypeInPlant: 'RFID_READER_TRUCK_DEVICE_ID',
+        },
+      };
+
+      this.devicesStore.createDevice(createPayload);
     });
   }
 

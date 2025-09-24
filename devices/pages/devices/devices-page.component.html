@@ -6,6 +6,9 @@
 
 <app-header [pageTitle]="'admin.devices.title' | translate">
   <div class="header__actions">
+    <button (click)="openCreateDeviceDialog()" class="btn header__create-button">
+      Alta dispositivo
+    </button>
     <button
       (click)="handleFiltersOpen()"
       class="btn header__filter-button"
