@@ -23,7 +23,7 @@ import { setDevicesFiltersUpdater } from './updaters/set-devices-filters.updater
 import { changeCurrentPageUpdater } from './updaters/change-current-page.updater';
 import { toggleFiltersUpdater } from './updaters/toggle-filters.updater';
 import { DevicesResponse } from '../models/device.model';
-import { DeviceUpdateRequest } from '../services/devices.service';
+import { DeviceCreateRequest, DeviceUpdateRequest } from '../services/devices.service';
 import { setSelectedDeviceUpdater } from './updaters/set-selected-device.updater';
 import { setSelectedHopperUpdater } from './updaters/set-selected-hopper.updater';
 import { setSelectedWeighingPlatformUpdater } from './updaters/set-selected-weighing-platform.updater';
@@ -127,6 +127,22 @@ export const DevicesStore = signalStore(
       }
     );
 
+    const createDeviceHandler = (payload: DeviceCreateRequest) => {
+      patchState(store, setBusyUpdater(true));
+      store._devicesService.createDevice(payload).subscribe({
+        next: () => {
+          console.log('Dispositivo creado con éxito');
+        },
+        complete: () => {
+          _fetchDevices(store.filters());
+        },
+        error: error => {
+          console.error('Error al crear el dispositivo', error);
+          patchState(store, setBusyUpdater(false));
+        },
+      });
+    };
+
     const updateHopperHandler = createUpdateHandler(
       (id: number, payload: unknown) =>
         store._devicesService.updateHopper(id, payload),
@@ -208,6 +224,7 @@ export const DevicesStore = signalStore(
       updateHopper: updateHopperHandler,
       updateEntryArea: updateEntryAreaHandler,
       updateWeighingPlatform: updateWeighingPlatformHandler,
+      createDevice: createDeviceHandler,
       toggleFiltersOpen: (isOpen?: boolean) => {
         patchState(store, toggleFiltersUpdater(isOpen));
       },

@@ -31,6 +31,17 @@ export interface DeviceUpdateRequest {
   PositionDTO: PositionDTO;
 }
 
+export interface DeviceCreateRequest {
+  name: string;
+  type: string;
+  locationId: number;
+  ip: string;
+  port: string;
+  power: number;
+  frequency: number;
+  positionDTO: PositionDTO;
+}
+
 @Injectable({ providedIn: 'root' })
 export class DevicesService {
   private readonly http = inject(HttpClient);
@@ -54,6 +65,13 @@ export class DevicesService {
     // const url = `${environment.API_URL}/master/device/${id}`;
     // return this.http.put(url, deviceData);
     console.log(`Actualizando device con ID: ${id} (fake service)`, deviceData);
+    return of({}).pipe(delay(500));
+  }
+
+  createDevice(deviceData: DeviceCreateRequest): Observable<any> {
+    // const url = `${environment.API_URL}/master/device`;
+    // return this.http.post(url, deviceData);
+    console.log('Creando nuevo device (fake service)', deviceData);
     return of({}).pipe(delay(500));
   }
 
