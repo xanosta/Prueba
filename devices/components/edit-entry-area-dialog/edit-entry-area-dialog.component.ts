@@ -1,60 +1,59 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { Validators } from '@angular/forms';
 
-import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
-import { LocationsStore } from 'app/features/locations/store/locations.store';
-import { SelectModule } from 'primeng/select';
-import { InputSwitchModule } from 'primeng/inputswitch';
+import {
+  EditEntityDialogComponent,
+  EditEntityFieldSection,
+} from '../edit-entity-dialog/edit-entity-dialog.component';
 
 @Component({
   selector: 'app-edit-entry-area-dialog',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    InputTextModule,
-    ButtonModule,
-    SelectModule,
-    InputSwitchModule,
-  ],
+  imports: [EditEntityDialogComponent],
   templateUrl: './edit-entry-area-dialog.component.html',
 })
-export class EditEntryAreaDialogComponent implements OnInit {
-  private readonly fb = inject(FormBuilder);
-  public readonly ref = inject(DynamicDialogRef);
-  public readonly config = inject(DynamicDialogConfig);
-  public readonly locationsStore = inject(LocationsStore);
-
-  public editEntryAreaForm: FormGroup;
-
-  constructor() {
-    this.editEntryAreaForm = this.fb.group({
-      name: ['', Validators.required],
-      locationId: [null, Validators.required],
-      plateReaderDeviceId: ['', Validators.required],
-      rfidReaderDeviceId: ['', Validators.required],
-      ignoreEntry: [false],
-    });
-  }
-
-  ngOnInit(): void {
-    const entryAreaData = this.config.data?.entryArea;
-    if (entryAreaData) {
-      this.editEntryAreaForm.patchValue(entryAreaData);
-    }
-  }
-
-  public save(): void {
-    if (this.editEntryAreaForm.invalid) {
-      return;
-    }
-    this.ref.close(this.editEntryAreaForm.value);
-  }
-
-  public cancel(): void {
-    this.ref.close();
-  }
+export class EditEntryAreaDialogComponent {
+  public readonly entryAreaFields: EditEntityFieldSection[] = [
+    [
+      {
+        id: 'name',
+        label: 'Nombre',
+        type: 'text',
+        validators: [Validators.required],
+      },
+      {
+        id: 'locationId',
+        label: 'Planta',
+        type: 'select',
+        validators: [Validators.required],
+        optionsKey: 'locations',
+        optionLabel: 'name',
+        optionValue: 'locationId',
+        placeholder: 'Selecciona una planta',
+      },
+    ],
+    [
+      {
+        id: 'plateReaderDeviceId',
+        label: 'ID Lector de Matrícula',
+        type: 'text',
+        validators: [Validators.required],
+      },
+      {
+        id: 'rfidReaderDeviceId',
+        label: 'ID Lector RFID',
+        type: 'text',
+        validators: [Validators.required],
+      },
+    ],
+    [
+      {
+        id: 'ignoreEntry',
+        label: 'Ignorar Entrada',
+        type: 'switch',
+        layout: 'row',
+        defaultValue: false,
+      },
+    ],
+  ];
 }

@@ -1,0 +1,71 @@
+<form
+  [formGroup]="entityForm"
+  class="form"
+  [attr.data-form-name]="formGroupName"
+>
+  <ng-container *ngFor="let section of sections">
+    <div class="form__section">
+      <ng-container *ngFor="let field of section">
+        <div
+          class="form-group"
+          [ngClass]="{ 'form-group--row': field.layout === 'row' }"
+        >
+          <label [for]="field.id">{{ field.label }}</label>
+          <ng-container [ngSwitch]="field.type">
+            <input
+              *ngSwitchCase="'text'"
+              pInputText
+              [id]="field.id"
+              [type]="field.inputType ?? 'text'"
+              [placeholder]="field.placeholder"
+              [formControlName]="field.id"
+            />
+            <input
+              *ngSwitchCase="'number'"
+              pInputText
+              [id]="field.id"
+              type="number"
+              [placeholder]="field.placeholder"
+              [formControlName]="field.id"
+            />
+            <p-select
+              *ngSwitchCase="'select'"
+              [id]="field.id"
+              [options]="resolveOptions(field)"
+              [optionLabel]="field.optionLabel ?? 'label'"
+              [optionValue]="field.optionValue ?? 'value'"
+              [placeholder]="field.placeholder"
+              [formControlName]="field.id"
+            ></p-select>
+            <p-inputSwitch
+              *ngSwitchCase="'switch'"
+              [formControlName]="field.id"
+            ></p-inputSwitch>
+            <input
+              *ngSwitchDefault
+              pInputText
+              [id]="field.id"
+              [type]="field.inputType ?? 'text'"
+              [placeholder]="field.placeholder"
+              [formControlName]="field.id"
+            />
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+</form>
+
+<div class="form__controls">
+  <button type="button" (click)="cancel()" class="btn btn__secondary">
+    Cancelar
+  </button>
+  <button
+    type="button"
+    (click)="save()"
+    class="btn btn__primary"
+    [disabled]="entityForm.invalid"
+  >
+    Guardar
+  </button>
+</div>

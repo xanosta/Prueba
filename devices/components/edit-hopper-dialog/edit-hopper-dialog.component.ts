@@ -1,51 +1,50 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { Validators } from '@angular/forms';
 
-import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
-import { LocationsStore } from 'app/features/locations/store/locations.store';
-import { SelectModule } from 'primeng/select';
+import {
+  EditEntityDialogComponent,
+  EditEntityFieldSection,
+} from '../edit-entity-dialog/edit-entity-dialog.component';
 
 @Component({
   selector: 'app-edit-hopper-dialog',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputTextModule, ButtonModule, SelectModule],
+  imports: [EditEntityDialogComponent],
   templateUrl: './edit-hopper-dialog.component.html',
 })
-export class EditHopperDialogComponent implements OnInit {
-  private readonly fb = inject(FormBuilder);
-  public readonly ref = inject(DynamicDialogRef);
-  public readonly config = inject(DynamicDialogConfig);
-  public readonly locationsStore = inject(LocationsStore);
-
-  public editHopperForm: FormGroup;
-
-  constructor() {
-    this.editHopperForm = this.fb.group({
-      name: ['', Validators.required],
-      locationId: [null, Validators.required],
-      containerRfidDeviceId: ['', Validators.required],
-      truckRfidDeviceId: ['', Validators.required],
-    });
-  }
-
-  ngOnInit(): void {
-    const hopperData = this.config.data?.hopper;
-    if (hopperData) {
-      this.editHopperForm.patchValue(hopperData);
-    }
-  }
-
-  public save(): void {
-    if (this.editHopperForm.invalid) {
-      return;
-    }
-    this.ref.close(this.editHopperForm.value);
-  }
-
-  public cancel(): void {
-    this.ref.close();
-  }
+export class EditHopperDialogComponent {
+  public readonly hopperFields: EditEntityFieldSection[] = [
+    [
+      {
+        id: 'name',
+        label: 'Nombre',
+        type: 'text',
+        validators: [Validators.required],
+      },
+      {
+        id: 'locationId',
+        label: 'Planta',
+        type: 'select',
+        validators: [Validators.required],
+        optionsKey: 'locations',
+        optionLabel: 'name',
+        optionValue: 'locationId',
+        placeholder: 'Selecciona una planta',
+      },
+    ],
+    [
+      {
+        id: 'containerRfidDeviceId',
+        label: 'ID Dispositivo RFID Contenedor',
+        type: 'text',
+        validators: [Validators.required],
+      },
+      {
+        id: 'truckRfidDeviceId',
+        label: 'ID Dispositivo RFID Camión',
+        type: 'text',
+        validators: [Validators.required],
+      },
+    ],
+  ];
 }

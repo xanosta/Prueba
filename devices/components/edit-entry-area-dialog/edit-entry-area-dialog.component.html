@@ -1,49 +1,5 @@
-<form [formGroup]="editEntryAreaForm" class="form">
-  <div class="form__section">
-    <div class="form-group">
-      <label for="name">Nombre</label>
-      <input id="name" type="text" pInputText formControlName="name" />
-    </div>
-    <div class="form-group">
-      <label for="location">Planta</label>
-      <p-select
-        id="location"
-        formControlName="locationId"
-        [options]="locationsStore.locations()"
-        optionLabel="name"
-        optionValue="locationId"
-        placeholder="Selecciona una planta"
-      ></p-select>
-    </div>
-  </div>
-
-  <div class="form__section">
-    <div class="form-group">
-      <label for="plateReaderDeviceId">ID Lector de Matrícula</label>
-      <input
-        id="plateReaderDeviceId"
-        type="text"
-        pInputText
-        formControlName="plateReaderDeviceId"
-      />
-    </div>
-    <div class="form-group">
-      <label for="rfidReaderDeviceId">ID Lector RFID</label>
-      <input id="rfidReaderDeviceId" type="text" pInputText formControlName="rfidReaderDeviceId" />
-    </div>
-  </div>
-
-  <div class="form__section">
-    <div class="form-group form-group--row">
-      <label for="ignoreEntry">Ignorar Entrada</label>
-      <p-inputSwitch formControlName="ignoreEntry"></p-inputSwitch>
-    </div>
-  </div>
-</form>
-
-<div class="form__controls">
-  <button (click)="cancel()" class="btn btn__secondary">Cancelar</button>
-  <button (click)="save()" class="btn btn__primary" [disabled]="editEntryAreaForm.invalid">
-    Guardar
-  </button>
-</div>
+<app-edit-entity-dialog
+  [entityKey]="'entryArea'"
+  [formGroupName]="'editEntryAreaForm'"
+  [fields]="entryAreaFields"
+></app-edit-entity-dialog>

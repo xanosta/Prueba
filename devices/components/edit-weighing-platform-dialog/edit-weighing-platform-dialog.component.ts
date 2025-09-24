@@ -1,54 +1,70 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { Validators } from '@angular/forms';
 
-import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
-import { LocationsStore } from 'app/features/locations/store/locations.store';
-import { SelectModule } from 'primeng/select';
+import {
+  EditEntityDialogComponent,
+  EditEntityFieldSection,
+} from '../edit-entity-dialog/edit-entity-dialog.component';
 
 @Component({
   selector: 'app-edit-weighing-platform-dialog',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputTextModule, ButtonModule, SelectModule],
+  imports: [EditEntityDialogComponent],
   templateUrl: './edit-weighing-platform-dialog.component.html',
 })
-export class EditWeighingPlatformDialogComponent implements OnInit {
-  private readonly fb = inject(FormBuilder);
-  public readonly ref = inject(DynamicDialogRef);
-  public readonly config = inject(DynamicDialogConfig);
-  public readonly locationsStore = inject(LocationsStore);
-
-  public editWeighingPlatformForm: FormGroup;
-
-  constructor() {
-    this.editWeighingPlatformForm = this.fb.group({
-      name: ['', Validators.required],
-      locationId: [null, Validators.required],
-      rfidReaderDeviceId: ['', Validators.required],
-      scaleDeviceId: ['', Validators.required],
-      entryColumnDeviceId: ['', Validators.required],
-      exitColumnDeviceId: ['', Validators.required],
-      hopperId: [null, Validators.required],
-    });
-  }
-
-  ngOnInit(): void {
-    const weighingPlatformData = this.config.data?.weighingPlatform;
-    if (weighingPlatformData) {
-      this.editWeighingPlatformForm.patchValue(weighingPlatformData);
-    }
-  }
-
-  public save(): void {
-    if (this.editWeighingPlatformForm.invalid) {
-      return;
-    }
-    this.ref.close(this.editWeighingPlatformForm.value);
-  }
-
-  public cancel(): void {
-    this.ref.close();
-  }
+export class EditWeighingPlatformDialogComponent {
+  public readonly weighingPlatformFields: EditEntityFieldSection[] = [
+    [
+      {
+        id: 'name',
+        label: 'Nombre',
+        type: 'text',
+        validators: [Validators.required],
+      },
+      {
+        id: 'locationId',
+        label: 'Planta',
+        type: 'select',
+        validators: [Validators.required],
+        optionsKey: 'locations',
+        optionLabel: 'name',
+        optionValue: 'locationId',
+        placeholder: 'Selecciona una planta',
+      },
+      {
+        id: 'hopperId',
+        label: 'Tolva',
+        type: 'number',
+        validators: [Validators.required],
+      },
+    ],
+    [
+      {
+        id: 'rfidReaderDeviceId',
+        label: 'ID Lector RFID',
+        type: 'text',
+        validators: [Validators.required],
+      },
+      {
+        id: 'scaleDeviceId',
+        label: 'ID Báscula',
+        type: 'text',
+        validators: [Validators.required],
+      },
+    ],
+    [
+      {
+        id: 'entryColumnDeviceId',
+        label: 'ID Columna de Entrada',
+        type: 'text',
+        validators: [Validators.required],
+      },
+      {
+        id: 'exitColumnDeviceId',
+        label: 'ID Columna de Salida',
+        type: 'text',
+        validators: [Validators.required],
+      },
+    ],
+  ];
 }
