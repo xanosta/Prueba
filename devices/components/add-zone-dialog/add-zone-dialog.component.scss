@@ -1,0 +1,44 @@
+.add-zone-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 420px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-field label {
+  font-weight: 600;
+}
+
+.form-field select,
+.form-field input {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+}
+
+.error {
+  color: #d14343;
+  font-size: 0.8rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.actions .btn {
+  min-width: 120px;
+}
+
+.actions .btn-primary[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
