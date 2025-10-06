@@ -1,0 +1,45 @@
+@let locations = locationsStore.locations();
+@let submitting = isSubmitting();
+
+<form [formGroup]="form" class="add-zone">
+  <div class="add-zone__field">
+    <label class="add-zone__label" for="zoneLocation">Planta</label>
+    <p-select
+      id="zoneLocation"
+      formControlName="locationId"
+      [options]="locations"
+      optionLabel="name"
+      optionValue="locationId"
+      placeholder="Selecciona una planta"
+    ></p-select>
+  </div>
+
+  <div class="add-zone__field">
+    <label class="add-zone__label" for="zoneType">Zona</label>
+    <p-select
+      id="zoneType"
+      formControlName="zoneType"
+      [options]="areaTypes"
+      optionLabel="label"
+      optionValue="value"
+      placeholder="Selecciona una zona"
+    ></p-select>
+  </div>
+
+  <div class="add-zone__field">
+    <label class="add-zone__label" for="zoneName">Nombre</label>
+    <input pInputText id="zoneName" formControlName="name" placeholder="Introduce el nombre" />
+  </div>
+
+  <div class="add-zone__actions">
+    <button type="button" class="btn btn__secondary" (click)="cancel()">Cancelar</button>
+    <button
+      type="button"
+      class="btn btn__primary"
+      [disabled]="form.invalid || submitting"
+      (click)="submit()"
+    >
+      Aceptar
+    </button>
+  </div>
+</form>

@@ -1,0 +1,24 @@
+@use '../../../../../../../styles/weights' as *;
+
+.add-zone {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 22rem;
+}
+
+.add-zone__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.add-zone__label {
+  @extend .fw-semi-bold;
+}
+
+.add-zone__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
